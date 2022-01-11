@@ -93,7 +93,7 @@ def main():
     l_img_path, l_img_array = encode_img_list(l_img_path_roh)
     print('{} images were converted into an array.'.format(len(l_img_array)))
     #save the database as .npz
-    destination = r'/output.npz'
+    destination = r'/Users/valentina/PycharmProjects/duplicateImages/output.npz'
     save_np(destination, l_img_array, l_img_path)
     pass
 
