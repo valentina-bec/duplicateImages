@@ -58,7 +58,7 @@ def compare_images (l):
                 # compare img_matrix
                 error = mse(img_matrixA, img_matrixB)
                 # in case of similarity (Threshold: 200), select the image with lower quality
-                if error < 10:  #threeshold 200 do not diferentiate low key (low quality) imgs
+                if error < 10:  #threshold 200 do not diferentiate low key (low quality) imgs
                     img_lower_quality = check_img_quality(rootA, rootB)
                     list_images_to_delet.append((rootA, rootB, img_lower_quality))
 
