@@ -58,12 +58,13 @@ def compare_images (l):
                 # compare img_matrix
                 error = mse(img_matrixA, img_matrixB)
                 # in case of similarity (Threshold: 200), select the image with lower quality
-                if error < 200:
+                if error < 10:  #threeshold 200 do not diferentiate low key (low quality) imgs
                     img_lower_quality = check_img_quality(rootA, rootB)
                     list_images_to_delet.append((rootA, rootB, img_lower_quality))
 
         count +=1
     return list_images_to_delet
+
 # helper funcions
 def list_to_csv(list):
     np.savetxt("repeated_images.csv",
@@ -73,18 +74,19 @@ def list_to_csv(list):
     pass
 
 def print_data(data):
-    li = list(zip(l['label'], l['data']))
-    for item in l['label']:
+    li = list(zip(data['label'], data['data']))
+    for item in data['label']:
         print(item)
     pass
 
 def main():
 
-    npzfile = 'output.npz'
+    npzfile = r'/Users/valentina/PycharmProjects/duplicateImages/output_all.npz'
     data = load_data(npzfile)
     #check the data
     #print_data(data)
-    list_img_to_delet = compare_images(data)
+    li = list(zip(data['label'], data['data']))
+    list_img_to_delet = compare_images(li)
     list_to_csv(list_img_to_delet)
 
 main()
