@@ -3,31 +3,15 @@
 need better algorithm to compare the matrices.
 I'm not convinced it is the best way, but it works
 and image rotation has not been implemented yet
+version 2 with photoDNA
 
--->
-
-Mean Squared Error (MSE)
-Root Mean Squared Error (RMSE)
-Peak Signal-to-Noise Ratio (PSNR)
-Structural Similarity Index (SSIM)
-Universal Quality Image Index (UQI)
-Multi-scale Structural Similarity Index (MS-SSIM)
-Erreur Relative Globale Adimensionnelle de Synthèse (ERGAS)
-Spatial Correlation Coefficient (SCC)
-Relative Average Spectral Error (RASE)
-Spectral Angle Mapper (SAM)
-Visual Information Fidelity (VIF)
 """
 
 import cv2
 import os
 import imghdr
-
 import numpy as np
-
-
 from tkinter.filedialog import askdirectory
-
 
 def create_imgs_matrix(directory):
     """
@@ -45,14 +29,15 @@ def create_imgs_matrix(directory):
                 pass
             else:
                 if imghdr.what(img_file) and imghdr.what(img_file) != 'gif': # remove gif
-                    #print (imghdr.what(img_file))
                     # decode to a matrix
-                    #img_matrix = img_to_matrix(img_file)
                     img_matrix = img_to_tensor(img_file) # test simplified
                     # put in a list
                     list_of_images.append((root, filename, img_matrix))
 
     return list_of_images
+
+
+
 
 def img_to_tensor(img_file):
     """
@@ -100,15 +85,20 @@ def check_img_quality(imageA, imageB):
         return imageA
     else: return str('same quality')
 
-def select_img_for_comparison(list):
-    # settings of img A
-
-    pass
+def select_image(list_of_images):
+    for item in list_of_images:
+        # settings of img A
+        root, filename, img_matrix = item[0], '{}/{}'.format(item[0], item[1]), item[2]
+        if img_matrix == 'no bytes':
+            list_of_images.remove(item)
+            return (filename, '...', 'no bytes')
+        else:
+            return (root, filename, img_matrix)
 
 def compare_images (list_of_images):
 
     """
-    setting A und setting B in loop is not to optimal.
+    setting A und setting B in loop smells .
     it should be improved.
     """
     list_images_to_delet = list()
@@ -127,7 +117,7 @@ def compare_images (list_of_images):
                 #settings of img B
                 rootB, filenameB, img_matrixB = item[0], '{}/{}'.format(item[0], item[1]), item[2]
 
-                if filenameA == filenameB or img_matrixB == 'no bytes' :
+                if filenameA == filenameB or img_matrixB == 'no bytes' : # no bytes should be removed bevor, redundance?
                     #do not check the same file
                     pass
                 else:
